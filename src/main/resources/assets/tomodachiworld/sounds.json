@@ -1,0 +1,7 @@
+{
+  "tomodachiworld.tom_town": {
+    "sounds": [
+      { "name": "tomodachiworld:tom_town", "stream": true }
+    ]
+  }
+}

@@ -1,0 +1,166 @@
+===============================================================
+ TomodachiWorld - ASSET / AUDIO SETUP GUIDE (texturas, música, voces)
+ Versión soportada: Minecraft Java 1.20.1 - Loader: Fabric
+===============================================================
+
+IMPORTANTE sobre este proyecto:
+- Este es un MOD DE JAVA (Fabric), NO un addon de Bedrock. Minecraft
+  Bedrock usa el formato .mcpack/.mcaddon (JSON), que es distinto.
+  Para hacer la versión de Bedrock hay que rehacer el proyecto con
+  behavior packs + resource packs. Aquí se ha implementado la versión
+  de Java que se puede construir en este entorno.
+- El audio (música de Tomodachi 3DS y las voces) NO se puede generar
+  como archivo desde aquí: son ficheros binarios (.ogg/.wav). Además,
+  la música de Tomodachi Life/3DS está protegida por copyright de
+  Nintendo. Tienes que conseguir los archivos de audio POR TU CUENTA
+  (grabar tu propia voz o usar audio con el que tengas licencia).
+- Las texturas (.png) también son binarias: aquí se dejan los huecos y
+  los nombres exactos de archivo para que pongas tus imágenes.
+
+---------------------------------------------------------------
+ 1) MUESTRA EL MENÚ "NOMBRE DE LA CIUDAD" (ya implementado)
+---------------------------------------------------------------
+El mod abre una pantalla (GUI) para escribir el nombre de la ciudad
+al hacer clic derecho (con la mano vacía) en el Steve guía.
+
+La textura de fondo de esa pantalla debe ir en:
+
+    src/main/resources/assets/tomodachiworld/textures/gui/city_name.png
+
+Sugerencia de tamaño: 240x110 píxeles (misma medida que dibuja el
+código). Puede ser una ventana tipo "bubble" de Tomodachi.
+
+El código ya carga esa textura (Identifier "tomodachiworld:
+textures/gui/city_name.png"). Solo tienes que poner tu PNG ahí.
+
+---------------------------------------------------------------
+ 1b) ICONO DEL MOD (opcional pero recomendado)
+---------------------------------------------------------------
+El archivo fabric.mod.json referencia un icono del mod en:
+
+    src/main/resources/assets/tomodachiworld/icon.png
+
+Si no pones un PNG ahí, el mod igual carga (solo avisa en el log).
+Puedes poner una imagen cuadrada (por ejemplo 128x128) con el
+logo/nombre del mod.
+
+---------------------------------------------------------------
+ 2) TEXTO / MENSAJES DE DIÁLOGO
+---------------------------------------------------------------
+Los textos ya están en español dentro del archivo:
+
+    src/main/resources/assets/tomodachiworld/lang/en_us.json
+
+Puedes editarlo si quieres cambiar las líneas. Los diálogos actuales
+son:
+  - "[Caboxc1] Hola, soy Caboxc1."
+  - "[Caboxc1] Para empezar el mod, debes construir la casa del Mii."
+  - "[Caboxc1] Cuando termines, ponle nombre a tu ciudad y crea tu Mii."
+
+Para usarlos también en "Español" del juego define el idioma como
+es_es, pero los textos ya están en español en todas ellas.
+
+---------------------------------------------------------------
+ 3) STEVE GUÍA (personaje con huevo)
+---------------------------------------------------------------
+- Item/huevo:      Huevo de invocación "Steve Guide Spawn Egg".
+- Textura del modelo del Steve (es un PNG de jugador, 64x64):
+
+    src/main/resources/assets/tomodachiworld/textures/entity/steve_guide.png
+
+  La pantalla usa el modelo de jugador (PlayerEntityModel), así que
+  usa el layout estándar de textura de jugador "steve.png" de Minecraft.
+  Puedes copiar el steve.png vanilla como base y redibujarlo.
+
+- El comportamiento "con animación de caminata de Tomodachi 3DS" no se
+  puede reproducir exactamente en Java 1.20.1 sin escritura de un modelo
+  y animación propios muy avanzados. Aquí usa la animación de caminata
+  normal del jugador/mob.
+
+---------------------------------------------------------------
+ 4) ZOMBI BETA (referencia beta) - huevo
+---------------------------------------------------------------
+- Item/huevo:      "Beta Zombie Spawn Egg".
+- Textura (PNG de zombie, 64x64x2 layout de zombie):
+
+    src/main/resources/assets/tomodachiworld/textures/entity/beta_zombie.png
+
+  Copia la textura del zombie clásico de Minecraft Beta (el aspecto
+  "clásico" sin brazos animados) y ponla aquí.
+
+---------------------------------------------------------------
+ 5) MÚSICA DE FONDO (Tomodachi 3DS)
+---------------------------------------------------------------
+La música no se carga por defecto en el código porque NO se puede
+empaquetar un .mp3/.ogg propietario sin permiso y porque faltan los
+archivos binarios. Si consigues un audio con licencia, debes:
+
+a) Convertirlo a .ogg (formato que acepta Minecraft Java).
+b) Guardarlo en:
+
+    src/main/resources/assets/tomodachiworld/sounds/tom_town.ogg
+
+c) Declararlo en el registro de sonidos:
+
+    src/main/resources/assets/tomodachiworld/sounds.json
+
+   Añádelo así (ya dejo la estructura creada):
+   {
+     "tomodachiworld.tom_town": {
+       "sounds": [
+         { "name": "tomodachiworld:tom_town", "stream": true }
+       ]
+     }
+   }
+
+d) Llamarlo desde el código con:
+   player.playSound(SoundEvents... , ...)  o
+   player.getWorld().playSound(null, player.getBlockPos(),
+        net.minecraft.sound.SoundEvent.fromIdentifier(
+             new Identifier("tomodachiworld", "tom_town")),
+        net.minecraft.sound.SoundCategory.MUSIC, 1.0f, 1.0f);
+
+   (El código de arranque de música habría que añadirlo en
+    GuideDialogue / client. Dime y lo conecto cuando tengas el .ogg.)
+
+---------------------------------------------------------------
+ 6) VOCES (audio de Caboxc1)
+---------------------------------------------------------------
+Igual que la música: necesitas un archivo .ogg con la voz.
+
+Ejemplo de nombres de archivo (según la línea de diálogo):
+  - intro_1.ogg  -> "Hola, soy Caboxc1."
+  - intro_2.ogg  -> "Para empezar... casa del Mii."
+  - intro_3.ogg  -> "Cuando termines, ponle nombre a tu ciudad..."
+
+Carpeta de voces:
+
+    src/main/resources/assets/tomodachiworld/sounds/voices/
+
+Y se registran igual en sounds.json con nombres
+"tomodachiworld.voice.intro_1", etc.
+
+---------------------------------------------------------------
+ 7) CÓMO CONSTRUIR / PROBAR
+---------------------------------------------------------------
+- Instala Fabric Loader 1.20.1 + Fabric API 1.20.1 en tu launcher.
+- En la carpeta del mod ejecuta:
+      ./gradlew build
+- El .jar del mod sale en:
+      build/libs/tomodachiworld-1.0.0.jar
+- Mételo en la carpeta `mods` de tu instalación de Minecraft.
+- En el juego, coge el "Steve Guide Spawn Egg" (en la pestaña
+  "Tomodachi World") y suelta el Steve. Haz clic derecho con la mano
+  vacía para que hable y abra el menú del nombre de la ciudad.
+
+---------------------------------------------------------------
+ 8) LÍMITES Y PRÓXIMOS PASOS
+---------------------------------------------------------------
+- Menú "crea tu Mii" con caras: es un editor de apariencia completo.
+  En Java 1.20.1 se podría hacer como otra HandledScreen. No está
+  implementado aún; se puede añadir como pantalla nueva.
+- La "animación de caminata de Tomodachi 3DS" no se puede replicar
+  exactamente; requiere un modelo y animación propios.
+- La música y las voces dependen de que TÚ aportes los archivos .ogg
+  con licencia/grabados por ti. Sin ellos el mod solo usa los textos.
+===============================================================

@@ -1,0 +1,13 @@
+{
+  "item.tomodachiworld.steve_guide_spawn_egg": "Steve Guide Spawn Egg",
+  "item.tomodachiworld.beta_zombie_spawn_egg": "Beta Zombie Spawn Egg",
+  "entity.tomodachiworld.steve_guide": "Steve Guide",
+  "entity.tomodachiworld.beta_zombie": "Beta Zombie",
+  "itemGroup.tomodachiworld.tomodachiworld": "Tomodachi World",
+  "screen.tomodachiworld.city_name.title": "City Name",
+  "screen.tomodachiworld.city_name.prompt": "Enter a name, then press Esc to confirm.",
+  "dialogue.tomodachiworld.intro_1": "[Caboxc1] Hola, soy Caboxc1.",
+  "dialogue.tomodachiworld.intro_2": "[Caboxc1] Para empezar el mod, debes construir la casa del Mii.",
+  "dialogue.tomodachiworld.intro_3": "[Caboxc1] Cuando termines, ponle nombre a tu ciudad y crea tu Mii.",
+  "dialogue.tomodachiworld.require_empty": "Necesitas tener la mano vacía para hablar con Caboxc1."
+}
